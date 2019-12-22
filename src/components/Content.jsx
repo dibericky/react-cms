@@ -58,6 +58,7 @@ Content.propTypes = {
   ),
   editCollectionItemById: PropTypes.func.isRequired,
   isCustom: PropTypes.bool,
+  basePath: PropTypes.string.isRequired,
 };
 
 Content.defaultProps = {

@@ -17,7 +17,7 @@ export default function Content({
       action: column.primaryKey ? navigateToItem : null,
     }));
     setConfigTable(configColumns);
-  }, [config]);
+  }, [config, navigateToItem]);
 
   return (
     !isCustom

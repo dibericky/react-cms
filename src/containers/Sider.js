@@ -13,17 +13,29 @@ function mapStateToProps(state) {
     name: categories.custom[key].name,
   }));
   return {
-    menuItems: fromDefault.concat(fromCustom),
+    menuItemsFromCustom: fromCustom,
+    menuItemsFromDefault: fromDefault,
   };
 }
 function mapDispatchToProps() {
   return {};
 }
 function mergeProps(stateProps, dispatchProps, ownProps) {
+  const { menuItemsFromCustom, menuItemsFromDefault } = stateProps;
   return {
-    ...stateProps,
     ...dispatchProps,
     ...ownProps,
+    defaultOpenKeys: ['default', 'custom'],
+    menuItems: [{
+      id: 'default',
+      name: 'Collections',
+      children: menuItemsFromDefault,
+    }, {
+      id: 'custom',
+      name: 'Custom',
+      children: menuItemsFromCustom,
+      addButton: true,
+    }],
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(SiderComponent);

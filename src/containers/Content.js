@@ -2,11 +2,9 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/jsx-filename-extension */
 import React from 'react';
-import { connect } from 'react-redux';
 import { Switch, Route } from 'react-router';
 import PropTypes from 'prop-types';
 import { join } from 'path';
-import get from 'lodash.get';
 import { Layout } from 'antd';
 
 import ListContent from './ListContent';

@@ -54,3 +54,18 @@ export const getCustomCategories = (dispatch) => {
       });
     });
 };
+export const createCustomCategory = (dispatch) => (values, onSuccess) => {
+  // eslint-disable-next-line no-undef
+  fetch('/custom-categories', {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+    .then((response) => response.json())
+    .then((object) => {
+      dispatch({
+        type: 'CREATE_CUSTOM_CATEGORY',
+        payload: object,
+      });
+      onSuccess();
+    });
+};

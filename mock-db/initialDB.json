@@ -329,7 +329,7 @@
     ]
   },
   "custom-categories": {
-    "coverMovies": {
+    "imageCover-1": {
       "id": "imageCover-1",
       "name": "coverMovies",
       "type": "gallery",
