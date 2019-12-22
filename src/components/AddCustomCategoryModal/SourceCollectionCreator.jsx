@@ -48,7 +48,7 @@ export default class SourceCollectionCreator extends Component {
 
     render() {
       const { onChange, collection } = this.props;
-      console.log('>>', this.props.collectionsConfig);
+
       return (
         <>
           <Select
