@@ -5,11 +5,11 @@ import { Layout, Breadcrumb } from 'antd';
 
 import Sider from '../containers/Sider';
 import Content from '../containers/Content';
-import AddCustomCategoryModal from './AddCustomCategoryModal/index';
+import AddCustomViewModal from './AddCustomViewModal/index';
 
 export default function CollectionsSection({
-  createCustomCategory,
-  getCustomCategories,
+  createCustomView,
+  getCustomViews,
   getCollections,
   fullPath,
   basePath,
@@ -22,8 +22,8 @@ export default function CollectionsSection({
   useEffect(() => {
     getConfigs();
     getCollections();
-    getCustomCategories();
-  }, [getCollections, getConfigs, getCustomCategories]);
+    getCustomViews();
+  }, [getCollections, getConfigs, getCustomViews]);
 
   return (
     <Layout>
@@ -46,12 +46,12 @@ export default function CollectionsSection({
         </Breadcrumb>
         <Content basePath={basePath} editCollectionItemById={editCollectionItemById} />
       </Layout>
-      <AddCustomCategoryModal
+      <AddCustomViewModal
         isVisible={isModalVisible}
         onCancel={() => setIsModalVisible(false)}
         onConfirm={(values) => {
-          createCustomCategory(values, () => {
-            getCustomCategories();
+          createCustomView(values, () => {
+            getCustomViews();
             setIsModalVisible(false);
           });
         }}
@@ -62,9 +62,9 @@ export default function CollectionsSection({
 }
 
 CollectionsSection.propTypes = {
-  createCustomCategory: PropTypes.func.isRequired,
+  createCustomView: PropTypes.func.isRequired,
   editCollectionItemById: PropTypes.func.isRequired,
-  getCustomCategories: PropTypes.func.isRequired,
+  getCustomViews: PropTypes.func.isRequired,
   getConfigs: PropTypes.func.isRequired,
   getCollections: PropTypes.func.isRequired,
   fullPath: PropTypes.string.isRequired,

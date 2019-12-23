@@ -1,9 +1,9 @@
 import collections from './collections';
-import categories from './categories';
+import views from './views';
 import configs from './configs';
 
 export default {
   collections,
-  categories,
+  views,
   configs,
 };

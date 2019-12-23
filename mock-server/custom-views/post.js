@@ -6,20 +6,20 @@ module.exports = (req, res) => {
   const dbPath = join(__dirname, '..', '..', 'mock-db', 'db.json');
   fs.readFile(dbPath, (err, data) => {
     const db = JSON.parse(data);
-    const customCategories = db['custom-categories'];
+    const customViews = db['custom-views'];
     const id = uuid();
-    const newCustomCategory = {
+    const newCustomView = {
       id,
       ...JSON.parse(req.body),
     };
     const newDb = {
       ...db,
-      'custom-categories': {
-        ...customCategories,
-        [id]: newCustomCategory,
+      'custom-views': {
+        ...customViews,
+        [id]: newCustomView,
       },
     };
     fs.writeFileSync(dbPath, JSON.stringify(newDb));
-    res.send(newCustomCategory);
+    res.send(newCustomView);
   });
 };

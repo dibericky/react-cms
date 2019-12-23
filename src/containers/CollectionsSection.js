@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { join } from 'path';
 
 import {
-  getCollections, getConfigs, editCollectionItemById, getCustomCategories, createCustomCategory,
+  getCollections, getConfigs, editCollectionItemById, getCustomViews, createCustomView,
 } from '../actions';
 import CollectionsSectionComponent from '../components/CollectionsSection';
 
@@ -16,9 +16,9 @@ function mapDispatchToProps(dispatch) {
   return {
     getCollections: () => getCollections(dispatch),
     getConfigs: () => getConfigs(dispatch),
-    getCustomCategories: () => getCustomCategories(dispatch),
+    getCustomViews: () => getCustomViews(dispatch),
     editCollectionItemById: (name, id, newValue) => editCollectionItemById(dispatch)(name, id, newValue),
-    createCustomCategory: (values, onSuccess) => createCustomCategory(dispatch)(values, onSuccess),
+    createCustomView: (values, onSuccess) => createCustomView(dispatch)(values, onSuccess),
   };
 }
 function mergeProps(stateProps, dispatchProps, ownProps) {

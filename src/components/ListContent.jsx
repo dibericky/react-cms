@@ -11,9 +11,8 @@ export default function Content({
 
   useEffect(() => {
     const configColumns = config.map((column) => ({
-      name: column.name,
+      ...column,
       type: column.primaryKey ? 'action' : column.type,
-      editable: !column.primaryKey,
       action: column.primaryKey ? navigateToItem : null,
     }));
     setConfigTable(configColumns);

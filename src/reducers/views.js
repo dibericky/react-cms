@@ -11,7 +11,7 @@ export default function (state = initialState, { type, payload }) {
         default: Object.keys(payload),
       };
     }
-    case 'GET_CUSTOM_CATEGORIES': {
+    case 'GET_CUSTOM_VIEWS': {
       return {
         ...state,
         custom: payload,

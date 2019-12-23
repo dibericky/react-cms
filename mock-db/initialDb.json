@@ -6,7 +6,8 @@
         "name": "Humandroid",
         "title": "Humandroid",
         "image": "https://scontent-mxp1-1.xx.fbcdn.net/v/t1.0-1/c33.0.134.200a/10011257_968869819803995_7887075403042570381_n.jpg?_nc_ohc=smkyr5_gp28AQluE8LQ3BY8LCQsuTS4UNg22j6DXCENeNmTdONaJ9NusQ&_nc_ht=scontent-mxp1-1.xx&oh=674798da1b95c0b595ef36d852458a7a&oe=5EAAB492",
-        "facebook": "https://www.facebook.com/Humandroidilfilm/?ref=profile"
+        "facebook": "https://www.facebook.com/Humandroidilfilm/?ref=profile",
+        "status": "DRAFT"
       },
       {
         "id": "853462901418046",
@@ -281,6 +282,12 @@
       {
         "name": "facebook",
         "type": "string"
+      },
+      {
+        "name": "status",
+        "type": "string",
+        "default": "DRAFT",
+        "enum": ["PUBLISHED", "DRAFT", "TRASHED"]
       }
     ],
     "books": [
@@ -328,14 +335,15 @@
       }
     ]
   },
-  "custom-categories": {
+  "custom-views": {
     "imageCover-1": {
       "id": "imageCover-1",
       "name": "coverMovies",
       "type": "gallery",
       "collection": "movies",
       "projection": ["image"],
-      "metadata": ["name", "facebook"]
+      "metadata": ["name", "facebook"],
+      "categorized_by": "status"
     }
   }
 }

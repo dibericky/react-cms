@@ -13,7 +13,7 @@ import validateValues from './validateValuesBySchema';
 
 const SOURCES = ['collections'];
 
-export default class AddCustomCategoryModal extends Component {
+export default class AddCustomViewModal extends Component {
     static propTypes = {
       onConfirm: PropTypes.func.isRequired,
       isVisible: PropTypes.bool,

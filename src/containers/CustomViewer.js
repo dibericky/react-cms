@@ -21,9 +21,9 @@ function projection(data, columns, metadata = []) {
   }));
 }
 function mapStateToProps(state) {
-  const { categories, collections } = state;
+  const { views, collections } = state;
   return {
-    custom: categories.custom,
+    custom: views.custom,
     collections,
   };
 }

@@ -3,17 +3,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { Typography, Button } from 'antd';
+import { Typography, Button, Select } from 'antd';
 import EditableText from './EditableText';
 import EditableImage from './EditableImage';
 import Table from './Table';
-
-function injectIdInField(data) {
-  return data.map((item) => Object.keys(item).reduce((acc, key) => ({
-    ...acc,
-    [key]: { value: item[key], id: item.id },
-  }), {}));
-}
+import EditableEnum from './EditableEnum';
 
 export default class TableViewContent extends Component {
   static propTypes = {
@@ -21,6 +15,14 @@ export default class TableViewContent extends Component {
     config: PropTypes.arrayOf(PropTypes.shape({
       name: PropTypes.string.isRequired,
       type: PropTypes.string.isRequired,
+      default: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+      ]),
+      enum: PropTypes.arrayOf(PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+      ])),
     })),
     onValueChange: PropTypes.func.isRequired,
   };
@@ -54,20 +56,41 @@ export default class TableViewContent extends Component {
     }
   }
 
+  getDefaultValue(columnName) {
+    const { config } = this.props;
+    const configOfColumn = config.find((col) => col.name === columnName);
+    if (!configOfColumn) {
+      return undefined;
+    }
+    return configOfColumn.default;
+  }
+
+  getEnumValues(columnName) {
+    const { config } = this.props;
+    const configOfColumn = config.find((col) => col.name === columnName);
+    if (!configOfColumn) {
+      return undefined;
+    }
+    return configOfColumn.enum || [];
+  }
+
   mapTypeToRender(columnName, isEditable, action) {
     return ({
-      image: ({ id, value: url }) => {
+      image: (value, record) => {
+        const url = value || this.getDefaultValue(columnName);
         if (isEditable) {
           return (
             <EditableImage
               url={url}
-              onChange={(newValue) => this.onValueChange(id, columnName, newValue)}
+              onChange={(newValue) => this.onValueChange(record.id, columnName, newValue)}
             />
           );
         }
         return <img src={url} alt={url} height={50} />;
       },
-      string: ({ id, value: text }) => {
+      string: (value, record) => {
+        const { id } = record;
+        const text = value || this.getDefaultValue(columnName);
         if (isEditable) {
           return (
             <EditableText
@@ -78,7 +101,18 @@ export default class TableViewContent extends Component {
         }
         return <Typography.Text>{text}</Typography.Text>;
       },
-      action: ({ id, value: text }) => <Button type="link" onClick={() => action(id)}>{text}</Button>,
+      action: (value, record) => {
+        const { id } = record;
+        const text = value || this.getDefaultValue(columnName);
+        return <Button type="link" onClick={() => action(id)}>{text}</Button>;
+      },
+      enum: (value, record) => (
+        <EditableEnum
+          enumValues={this.getEnumValues(columnName)}
+          text={value || this.getDefaultValue(columnName)}
+          onChange={(newValue) => this.onValueChange(record.id, columnName, newValue)}
+        />
+      ),
     });
   }
 
@@ -87,9 +121,9 @@ export default class TableViewContent extends Component {
     return (
       <div style={{ height: '100%', overflow: 'hidden' }}>
         <Table
-          dataSource={injectIdInField(data)}
+          dataSource={data}
           columns={this.getColumns()}
-          rowKey={(record) => record.id.value}
+          rowKey={(record) => record.id}
         />
       </div>
     );

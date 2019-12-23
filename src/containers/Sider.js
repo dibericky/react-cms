@@ -3,14 +3,14 @@ import { connect } from 'react-redux';
 import SiderComponent from '../components/Sider';
 
 function mapStateToProps(state) {
-  const { categories } = state;
-  const fromDefault = categories.default.map((menuItem) => ({
+  const { views } = state;
+  const fromDefault = views.default.map((menuItem) => ({
     id: `default/${menuItem}`,
     name: menuItem,
   }));
-  const fromCustom = Object.keys(categories.custom).map((key) => ({
+  const fromCustom = Object.keys(views.custom).map((key) => ({
     id: `custom/${key}`,
-    name: categories.custom[key].name,
+    name: views.custom[key].name,
   }));
   return {
     menuItemsFromCustom: fromCustom,

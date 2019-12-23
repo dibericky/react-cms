@@ -43,27 +43,27 @@ export const editCollectionItemById = (dispatch) => (collectionName, id, values)
     });
 };
 
-export const getCustomCategories = (dispatch) => {
+export const getCustomViews = (dispatch) => {
   // eslint-disable-next-line no-undef
-  fetch('/custom-categories')
+  fetch('/custom-views')
     .then((response) => response.json())
     .then((object) => {
       dispatch({
-        type: 'GET_CUSTOM_CATEGORIES',
+        type: 'GET_CUSTOM_VIEWS',
         payload: object,
       });
     });
 };
-export const createCustomCategory = (dispatch) => (values, onSuccess) => {
+export const createCustomView = (dispatch) => (values, onSuccess) => {
   // eslint-disable-next-line no-undef
-  fetch('/custom-categories', {
+  fetch('/custom-views', {
     method: 'POST',
     body: JSON.stringify(values),
   })
     .then((response) => response.json())
     .then((object) => {
       dispatch({
-        type: 'CREATE_CUSTOM_CATEGORY',
+        type: 'CREATE_CUSTOM_VIEW',
         payload: object,
       });
       onSuccess();
