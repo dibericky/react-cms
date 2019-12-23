@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { Typography, Button, Select } from 'antd';
+import { Typography, Button } from 'antd';
 import EditableText from './EditableText';
 import EditableImage from './EditableImage';
 import Table from './Table';

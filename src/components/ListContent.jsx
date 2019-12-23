@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import TableViewContent from './TableViewContent';
 import CustomViewer from '../containers/CustomViewer';
 
-export default function Content({
-  name, data, config, editCollectionItemById, isCustom, navigateToItem,
+export default function ListContent({
+  name, data, config, editCollectionItemById, isCustom, navigateToItem, category, navigateToCategory,
 }) {
   const [configTable, setConfigTable] = useState(config);
 
@@ -29,13 +29,13 @@ export default function Content({
         />
       )
       : (
-        <CustomViewer name={name} />
+        <CustomViewer name={name} category={category} onCategoryClick={navigateToCategory} />
       )
 
   );
 }
 
-Content.propTypes = {
+ListContent.propTypes = {
   name: PropTypes.string,
   data: PropTypes.arrayOf(PropTypes.object),
   config: PropTypes.arrayOf(PropTypes.shape({
@@ -45,11 +45,14 @@ Content.propTypes = {
   editCollectionItemById: PropTypes.func.isRequired,
   isCustom: PropTypes.bool,
   navigateToItem: PropTypes.func.isRequired,
+  navigateToCategory: PropTypes.func.isRequired,
+  category: PropTypes.string,
 };
 
-Content.defaultProps = {
+ListContent.defaultProps = {
   name: null,
   data: [],
   config: [],
   isCustom: false,
+  category: undefined,
 };

@@ -343,7 +343,7 @@
       "collection": "movies",
       "projection": ["image"],
       "metadata": ["name", "facebook"],
-      "categorized_by": "status"
+      "categorizedBy": "status"
     }
   }
 }

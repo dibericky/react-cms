@@ -21,10 +21,11 @@ function projection(data, columns, metadata = []) {
   }));
 }
 function mapStateToProps(state) {
-  const { views, collections } = state;
+  const { views, collections, configs } = state;
   return {
     custom: views.custom,
     collections,
+    configs,
   };
 }
 function mapDispatchToProps(dispatch) {
@@ -33,30 +34,52 @@ function mapDispatchToProps(dispatch) {
   };
 }
 function mergeProps(stateProps, dispatchProps, ownProps) {
-  const { name } = ownProps;
+  const { name, category, onCategoryClick } = ownProps;
   const { onItemChange } = dispatchProps;
-  const { custom, collections } = stateProps;
+  const { custom, collections, configs } = stateProps;
   const customSelected = custom[name];
   if (!customSelected) {
     return {
       onItemChange: () => {},
+      onCategoryClick: () => {},
     };
   }
   const collectionSelected = collections[customSelected.collection];
   if (!collectionSelected) {
     return {
       onItemChange: () => {},
+      onCategoryClick: () => {},
     };
   }
+  let categories = [];
+  let collectionFiltered = Object.values(collectionSelected);
+
+  if (customSelected.categorizedBy) {
+    const collectionConfig = configs[customSelected.collection] || [];
+    const columnForCategory = collectionConfig
+      .find((column) => column.name === customSelected.categorizedBy);
+    if (columnForCategory && columnForCategory.enum) {
+      categories = columnForCategory.enum;
+    }
+
+    if (category) {
+      collectionFiltered = collectionFiltered
+        .filter((item) => item[customSelected.categorizedBy] === category);
+    }
+  }
+
   const data = projection(
-    Object.values(collectionSelected),
+    collectionFiltered,
     customSelected.projection,
     customSelected.metadata,
   );
   return {
+    currentCategory: category,
+    categories,
     data,
     type: customSelected.type,
     onItemChange: (id, values) => onItemChange(customSelected.collection, id, values),
+    onCategoryClick: (categoryClicked) => onCategoryClick(categoryClicked),
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(CustomViewerComponent);
