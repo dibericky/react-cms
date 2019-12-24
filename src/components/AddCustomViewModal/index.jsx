@@ -34,6 +34,7 @@ export default class AddCustomViewModal extends Component {
       metadata: [],
       errors: [],
       showErrors: false,
+      categorizedBy: undefined,
     }
 
     onChange(values) {
@@ -44,10 +45,10 @@ export default class AddCustomViewModal extends Component {
 
     getValuesForCreation() {
       const {
-        name, type, collection, projection, metadata,
+        name, type, collection, projection, metadata, categorizedBy,
       } = this.state;
       return {
-        name, type, collection, projection, metadata,
+        name, type, collection, projection, metadata, categorizedBy,
       };
     }
 
@@ -64,7 +65,7 @@ export default class AddCustomViewModal extends Component {
     renderBySource() {
       const { collectionsConfig } = this.props;
       const {
-        source, type, collection, projection, metadata,
+        source, type, collection, projection, metadata, categorizedBy,
       } = this.state;
       switch (source) {
         case 'collections': {
@@ -74,6 +75,7 @@ export default class AddCustomViewModal extends Component {
               type={type}
               collection={collection}
               projection={projection}
+              categorizedBy={categorizedBy}
               metadata={metadata}
               onChange={(values) => {
                 this.onChange({

@@ -20,6 +20,15 @@ function projection(data, columns, metadata = []) {
     }, {}),
   }));
 }
+function asMapByColumnName(configArray) {
+  return configArray.reduce((acc, column) => ({
+    ...acc,
+    [column.name]: column,
+  }), {});
+}
+function getValueOrDefault(item, columnName, configColumn) {
+  return item[columnName] !== undefined ? item[columnName] : configColumn.default;
+}
 function mapStateToProps(state) {
   const { views, collections, configs } = state;
   return {
@@ -52,12 +61,23 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     };
   }
   let categories = [];
-  let collectionFiltered = Object.values(collectionSelected);
+
+  const collectionConfigMap = asMapByColumnName(configs[customSelected.collection] || []);
+  const listOfColumnName = Object.keys(collectionConfigMap);
+  const collectionArray = Object.values(collectionSelected);
+
+  const collectionWithDefaultValues = collectionArray.map((item) => ({
+    ...item,
+    ...listOfColumnName.reduce((acc, columnName) => ({
+      ...acc,
+      [columnName]: getValueOrDefault(item, columnName, collectionConfigMap[columnName]),
+    }), {}),
+  }));
+  let collectionFiltered = collectionWithDefaultValues;
 
   if (customSelected.categorizedBy) {
-    const collectionConfig = configs[customSelected.collection] || [];
-    const columnForCategory = collectionConfig
-      .find((column) => column.name === customSelected.categorizedBy);
+    const columnForCategory = collectionConfigMap[customSelected.categorizedBy];
+
     if (columnForCategory && columnForCategory.enum) {
       categories = columnForCategory.enum;
     }

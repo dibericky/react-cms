@@ -18,6 +18,9 @@ export default {
         items: { type: 'string' },
         minItems: 0,
       },
+      categorizedBy: {
+        type: 'string',
+      },
     },
     additionalProperties: false,
     required: ['name', 'type', 'collection', 'projection'],

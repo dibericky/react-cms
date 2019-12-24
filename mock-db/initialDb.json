@@ -332,6 +332,12 @@
       {
         "name": "facebook",
         "type": "string"
+      },
+      {
+        "name": "type",
+        "type": "string",
+        "enum": ["anime", "serie", "tv program"],
+        "default": "serie"
       }
     ]
   },

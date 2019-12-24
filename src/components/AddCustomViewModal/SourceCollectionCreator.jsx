@@ -5,6 +5,7 @@ import { Select } from 'antd';
 import PropTypes from 'prop-types';
 
 import TypeSelector from './TypeSelector';
+import CategorizedSelector from './CetegorizedSelector';
 
 export default class SourceCollectionCreator extends Component {
     static propTypes = {
@@ -14,11 +15,13 @@ export default class SourceCollectionCreator extends Component {
       collection: PropTypes.string,
       projection: PropTypes.arrayOf(PropTypes.string).isRequired,
       metadata: PropTypes.arrayOf(PropTypes.string).isRequired,
+      categorizedBy: PropTypes.string,
     }
 
     static defaultProps = {
       type: undefined,
       collection: undefined,
+      categorizedBy: undefined,
     }
 
     getCollectionsList() {
@@ -46,6 +49,23 @@ export default class SourceCollectionCreator extends Component {
       return null;
     }
 
+    renderCategorizedSelector() {
+      const {
+        onChange, collection, collectionsConfig, categorizedBy,
+      } = this.props;
+
+      if (collection) {
+        return (
+          <CategorizedSelector
+            categorizedBy={categorizedBy}
+            collectionConfig={collectionsConfig[collection]}
+            onChange={(value) => onChange({ categorizedBy: value })}
+          />
+        );
+      }
+      return null;
+    }
+
     render() {
       const { onChange, collection } = this.props;
 
@@ -62,6 +82,7 @@ export default class SourceCollectionCreator extends Component {
               </Select.Option>
             ))}
           </Select>
+          {this.renderCategorizedSelector()}
           {this.renderTypeSelector()}
         </>
       );
