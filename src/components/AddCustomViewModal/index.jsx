@@ -33,7 +33,6 @@ export default class AddCustomViewModal extends Component {
       projection: [],
       metadata: [],
       errors: [],
-      showErrors: false,
       categorizedBy: undefined,
     }
 

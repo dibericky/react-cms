@@ -28,7 +28,7 @@ export default function CollectionsSection({
   return (
     <Layout>
       <Sider
-        onCategoryClick={navigateToCollection}
+        onItemViewClick={navigateToCollection}
         onClickAdd={(id) => {
           if (id !== 'custom') {
             return;

@@ -8,7 +8,7 @@ import styled from 'styled-components';
 const { SubMenu } = Menu;
 
 function Sider({
-  menuItems, onCategoryClick, onClickAdd, defaultOpenKeys,
+  menuItems, onItemViewClick, onClickAdd, defaultOpenKeys,
 }) {
   return (
     <Layout.Sider
@@ -25,7 +25,7 @@ function Sider({
         mode="inline"
         defaultOpenKeys={defaultOpenKeys}
         style={{ height: '100%', borderRight: 0 }}
-        onClick={(item) => onCategoryClick(item.key)}
+        onClick={(item) => onItemViewClick(item.key)}
       >
         {
           menuItems.map((menuItem) => {
@@ -93,7 +93,7 @@ Sider.propTypes = {
     }),
   ),
   defaultOpenKeys: PropTypes.arrayOf(PropTypes.string),
-  onCategoryClick: PropTypes.func.isRequired,
+  onItemViewClick: PropTypes.func.isRequired,
   onClickAdd: PropTypes.func.isRequired,
 };
 

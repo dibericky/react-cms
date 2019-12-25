@@ -9,7 +9,7 @@ function mapStateToProps(state) {
     name: menuItem,
   }));
   const fromCustom = Object.keys(views.custom).map((key) => ({
-    id: `custom/${key}`,
+    id: `custom/${key}${views.custom[key].categorizedBy ? '/category/' : ''}`,
     name: views.custom[key].name,
   }));
   return {
