@@ -11,6 +11,7 @@ export default function EditableText({ text, onChange, ...props }) {
   }, [text]);
   return (
     <Typography.Text
+      style={{ padding: 0, margin: 0 }}
       editable={{
         editing: isEditing,
         onStart: () => setIsEditing(true),

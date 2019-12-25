@@ -293,7 +293,8 @@
     "books": [
       {
         "name": "id",
-        "type": "string"
+        "type": "string",
+        "primaryKey": true
       },
       {
         "name": "name",
@@ -315,7 +316,8 @@
     "tvSeries": [
       {
         "name": "id",
-        "type": "string"
+        "type": "string",
+        "primaryKey": true
       },
       {
         "name": "name",

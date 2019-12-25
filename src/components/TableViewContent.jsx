@@ -1,13 +1,14 @@
+/* eslint-disable class-methods-use-this */
+/* eslint-disable react/sort-comp */
 /* eslint-disable react/static-property-placement */
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Button } from 'antd';
 
-import { Typography, Button } from 'antd';
-import EditableText from './EditableText';
-import EditableImage from './EditableImage';
+import Field from './Field';
 import Table from './Table';
-import EditableEnum from './EditableEnum';
+import PanelContent from './PanelContent';
 
 export default class TableViewContent extends Component {
   static propTypes = {
@@ -35,7 +36,7 @@ export default class TableViewContent extends Component {
   getColumns() {
     const { config } = this.props;
     return config.map((conf) => {
-      const render = this.mapTypeToRender(conf.name, conf.editable, conf.action)[conf.type];
+      const render = this.mapTypeToRender(conf);
       return {
         title: conf.name,
         dataIndex: conf.name,
@@ -74,58 +75,36 @@ export default class TableViewContent extends Component {
     return configOfColumn.enum || [];
   }
 
-  mapTypeToRender(columnName, isEditable, action) {
-    return ({
-      image: (value, record) => {
-        const url = value || this.getDefaultValue(columnName);
-        if (isEditable) {
-          return (
-            <EditableImage
-              url={url}
-              onChange={(newValue) => this.onValueChange(record.id, columnName, newValue)}
-            />
-          );
-        }
-        return <img src={url} alt={url} height={50} />;
-      },
-      string: (value, record) => {
-        const { id } = record;
-        const text = value || this.getDefaultValue(columnName);
-        if (isEditable) {
-          return (
-            <EditableText
-              text={text}
-              onChange={(newValue) => this.onValueChange(id, columnName, newValue)}
-            />
-          );
-        }
-        return <Typography.Text>{text}</Typography.Text>;
-      },
-      action: (value, record) => {
-        const { id } = record;
-        const text = value || this.getDefaultValue(columnName);
-        return <Button type="link" onClick={() => action(id)}>{text}</Button>;
-      },
-      enum: (value, record) => (
-        <EditableEnum
-          enumValues={this.getEnumValues(columnName)}
-          text={value || this.getDefaultValue(columnName)}
-          onChange={(newValue) => this.onValueChange(record.id, columnName, newValue)}
+
+  mapTypeToRender(config) {
+    if (!config.primaryKey) {
+      return (value, record) => (
+        <Field
+          value={value}
+          configColumn={config}
+          onValueChange={(newValue, colName) => this.onValueChange(record.id, colName, newValue)}
         />
-      ),
-    });
+      );
+    }
+    return (value, record) => {
+      const { id } = record;
+      const text = value || config.default;
+      return <Button type="link" onClick={() => config.action(id)}>{text}</Button>;
+    };
   }
 
   render() {
     const { data } = this.props;
     return (
-      <div style={{ height: '100%', overflow: 'hidden' }}>
-        <Table
-          dataSource={data}
-          columns={this.getColumns()}
-          rowKey={(record) => record.id}
-        />
-      </div>
+      <PanelContent>
+        <div style={{ height: '100%', overflow: 'hidden' }}>
+          <Table
+            dataSource={data}
+            columns={this.getColumns()}
+            rowKey={(record) => record.id}
+          />
+        </div>
+      </PanelContent>
     );
   }
 }

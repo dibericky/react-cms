@@ -12,9 +12,7 @@ export default function EditableImage({ url, onChange }) {
   if (!isEditing) {
     return (
       <div style={{
-        display: 'grid',
-        gridTemplateColumns: '1fr min-content',
-        gridGap: 10,
+        display: 'flex',
         alignItems: 'center',
       }}
       >
@@ -22,6 +20,7 @@ export default function EditableImage({ url, onChange }) {
           src={value}
           alt={value}
           height={50}
+          style={{ marginRight: 10 }}
         />
         <Icon
           type="edit"

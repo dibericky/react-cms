@@ -62,7 +62,9 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
   }
   let categories = [];
 
-  const collectionConfigMap = asMapByColumnName(configs[customSelected.collection] || []);
+  const collectionConfig = configs[customSelected.collection] || [];
+
+  const collectionConfigMap = asMapByColumnName(collectionConfig);
   const listOfColumnName = Object.keys(collectionConfigMap);
   const collectionArray = Object.values(collectionSelected);
 
@@ -88,13 +90,16 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     }
   }
 
+  const metadata = customSelected.metadata || [];
   const data = projection(
     collectionFiltered,
     customSelected.projection,
-    customSelected.metadata,
+    metadata,
   );
+
   return {
     currentCategory: category,
+    config: collectionConfig,
     categories,
     data,
     type: customSelected.type,

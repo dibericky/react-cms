@@ -5,7 +5,7 @@ import { Empty as AntdEmpty } from 'antd';
 
 import Modal from './Modal';
 
-export default function Gallery({ items, onImageChange }) {
+export default function Gallery({ items, onDataChange, collectionConfig }) {
   const [previewImage, setPreviewImage] = useState();
   const [previewId, setPreviewId] = useState();
   const [previewMetadata, setPreviewMetadata] = useState();
@@ -30,11 +30,14 @@ export default function Gallery({ items, onImageChange }) {
       </Container>
       <Modal
         isVisible={!!previewId}
+        collectionConfig={collectionConfig}
         image={previewImage}
         metadata={previewMetadata}
-        onChange={(newUrl) => {
-          setPreviewImage(newUrl);
-          onImageChange(previewId, { image: newUrl });
+        onChange={(values) => {
+          if (values.image) {
+            setPreviewImage(values.image);
+          }
+          onDataChange(previewId, values);
         }}
         onCancel={() => {
           setPreviewImage();
@@ -53,10 +56,17 @@ Gallery.propTypes = {
       image: PropTypes.string.isRequired,
     }).isRequired,
   })),
-  onImageChange: PropTypes.func.isRequired,
+  onDataChange: PropTypes.func.isRequired,
+  collectionConfig: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    editable: PropTypes.bool,
+    enum: PropTypes.arrayOf(PropTypes.string),
+  })),
 };
 Gallery.defaultProps = {
   items: [],
+  collectionConfig: [],
 };
 
 const Container = styled.div`

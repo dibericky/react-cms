@@ -9,23 +9,27 @@ import { editCollectionItemById } from '../actions';
 import DetailItemComponent from '../components/DetaiItemContent';
 
 function mapStateToProps(state) {
-  const { collections } = state;
+  const { collections, configs } = state;
   return {
     collections,
+    configs,
   };
 }
 function mapDispatchToProps(dispatch) {
   return {
-    editCollectionItemById: (name, id, newValue) => editCollectionItemById(dispatch)(name, id, newValue),
+    editById: editCollectionItemById(dispatch),
   };
 }
 function mergeProps(stateProps, dispatchProps, ownProps) {
-  const { content, id } = ownProps.match.params;
-  const data = get(stateProps.collections, [content, id]);
+  const { editById } = dispatchProps;
+  const { content: collectionName, id } = ownProps.match.params;
+  const data = get(stateProps.collections, [collectionName, id]);
+  const collectionConfig = get(stateProps.configs, collectionName);
 
   return {
-    ...dispatchProps,
+    editCollectionItemById: (newValues) => editById(collectionName, data.id, newValues),
     data,
+    config: collectionConfig,
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(DetailItemComponent);

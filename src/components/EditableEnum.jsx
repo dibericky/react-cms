@@ -3,7 +3,9 @@ import React, { useState, useEffect } from 'react';
 import { Select } from 'antd';
 import PropTypes from 'prop-types';
 
-export default function EditableEnum({ text, onChange, enumValues }) {
+export default function EditableEnum({
+  text, onChange, enumValues, disabled,
+}) {
   const [value, setValue] = useState();
   useEffect(() => {
     setValue(text);
@@ -12,6 +14,7 @@ export default function EditableEnum({ text, onChange, enumValues }) {
   return (
     <Select
       value={value}
+      disabled={disabled}
       onChange={(newValue) => {
         setValue(newValue);
         onChange(newValue);
@@ -41,9 +44,11 @@ EditableEnum.propTypes = {
     PropTypes.string,
     PropTypes.number,
   ])),
+  disabled: PropTypes.bool,
 };
 EditableEnum.defaultProps = {
   text: undefined,
   onChange: () => {},
   enumValues: [],
+  disabled: false,
 };

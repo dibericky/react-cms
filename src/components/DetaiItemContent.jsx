@@ -1,20 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Descriptions } from 'antd';
-import PanelContent from './PanelContent';
+import styled from 'styled-components';
 
-export default function DetailItemContent({ data }) {
+import PanelContent from './PanelContent';
+import EditableItemOverview from './EditableItemOverview';
+
+export default function DetailItemContent({ data, config, editCollectionItemById }) {
   return (
     <PanelContent>
       <div style={{ height: '100%', overflow: 'auto' }}>
-        <Descriptions layout="horizontal" bordered column={1}>
-          {
-          Object.keys(data)
-            .map((key) => (
-              <Descriptions.Item label={key} key={key}>{data[key]}</Descriptions.Item>
-            ))
-          }
-        </Descriptions>
+        <EditableItemOverview
+          data={data}
+          config={config}
+          editCollectionItemById={editCollectionItemById}
+        />
       </div>
     </PanelContent>
   );
@@ -22,8 +21,22 @@ export default function DetailItemContent({ data }) {
 
 DetailItemContent.propTypes = {
   data: PropTypes.shape({}),
+  config: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    editable: PropTypes.bool,
+    enum: PropTypes.arrayOf(PropTypes.string),
+  })),
+  editCollectionItemById: PropTypes.func.isRequired,
 };
 
 DetailItemContent.defaultProps = {
   data: {},
+  config: [],
 };
+
+const FieldWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-content: end;
+`;

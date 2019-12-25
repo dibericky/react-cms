@@ -12,7 +12,6 @@ export default function ListContent({
   useEffect(() => {
     const configColumns = config.map((column) => ({
       ...column,
-      type: column.primaryKey ? 'action' : column.type,
       action: column.primaryKey ? navigateToItem : null,
     }));
     setConfigTable(configColumns);

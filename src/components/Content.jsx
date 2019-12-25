@@ -28,7 +28,7 @@ export default function Content({
     >
       <Switch>
         {!isCustom ? (
-          <Route path={join(basePath, ':id')} render={DetailItemContent} />
+          <Route path={join(basePath, ':id')} component={DetailItemContent} />
         ) : null}
         <Route
           path={basePath}

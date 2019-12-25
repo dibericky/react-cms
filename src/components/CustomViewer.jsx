@@ -5,21 +5,21 @@ import CategoryMenu from './CategoryMenu';
 import Gallery from './Gallery/index';
 import PanelContent from './PanelContent';
 
-function getViewerByType(type, data, onItemChange) {
+function getViewerByType(type, data, onItemChange, config) {
   if (type === 'gallery') {
-    return <Gallery items={data} onImageChange={onItemChange} />;
+    return <Gallery items={data} onDataChange={onItemChange} collectionConfig={config} />;
   }
   return <div>{JSON.stringify(data)}</div>;
 }
 
 export default function CustomViewer({
-  data, type, onItemChange, categories, onCategoryClick,
+  data, type, onItemChange, categories, onCategoryClick, config,
 }) {
   return (
     <>
       <CategoryMenu categories={categories} onCategoryClick={onCategoryClick} />
       <PanelContent>
-        {getViewerByType(type, data, onItemChange)}
+        {getViewerByType(type, data, onItemChange, config)}
       </PanelContent>
     </>
   );
@@ -38,9 +38,16 @@ CustomViewer.propTypes = {
     PropTypes.number,
   ])),
   onCategoryClick: PropTypes.func.isRequired,
+  config: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    editable: PropTypes.bool,
+    enum: PropTypes.arrayOf(PropTypes.string),
+  })),
 };
 CustomViewer.defaultProps = {
   data: [],
   type: 'none',
   categories: [],
+  config: [],
 };
