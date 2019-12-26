@@ -11,7 +11,7 @@ import SourceCollectionCreator from './SourceCollectionCreator';
 import validateValues from './validateValuesBySchema';
 
 
-const SOURCES = ['collections'];
+const SOURCES = ['collection'];
 
 export default class AddCustomViewModal extends Component {
     static propTypes = {
@@ -44,10 +44,10 @@ export default class AddCustomViewModal extends Component {
 
     getValuesForCreation() {
       const {
-        name, type, collection, projection, metadata, categorizedBy,
+        name, type, collection, projection, metadata, categorizedBy, source,
       } = this.state;
       return {
-        name, type, collection, projection, metadata, categorizedBy,
+        name, type, collection, projection, metadata, categorizedBy, source,
       };
     }
 
@@ -67,7 +67,7 @@ export default class AddCustomViewModal extends Component {
         source, type, collection, projection, metadata, categorizedBy,
       } = this.state;
       switch (source) {
-        case 'collections': {
+        case 'collection': {
           return (
             <SourceCollectionCreator
               collectionsConfig={collectionsConfig}

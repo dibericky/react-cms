@@ -7,6 +7,10 @@ export default {
         minLength: 2,
       },
       type: { type: 'string', enum: ['gallery'] },
+      source: {
+        type: 'string',
+        enum: ['collection'],
+      },
       collection: { type: 'string' },
       projection: {
         type: 'array',
