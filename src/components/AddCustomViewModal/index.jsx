@@ -9,6 +9,7 @@ import styled from 'styled-components';
 
 import SourceCollectionCreator from './SourceCollectionCreator';
 import validateValues from './validateValuesBySchema';
+import FormCustomView from './FormCustomView';
 
 
 const SOURCES = ['collection'];
@@ -36,7 +37,7 @@ export default class AddCustomViewModal extends Component {
       categorizedBy: undefined,
     }
 
-    onChange(values) {
+    onChange = (values) => {
       this.setState({
         ...values,
       }, () => this.validate());
@@ -61,41 +62,12 @@ export default class AddCustomViewModal extends Component {
       return validation.isValid;
     }
 
-    renderBySource() {
-      const { collectionsConfig } = this.props;
-      const {
-        source, type, collection, projection, metadata, categorizedBy,
-      } = this.state;
-      switch (source) {
-        case 'collection': {
-          return (
-            <SourceCollectionCreator
-              collectionsConfig={collectionsConfig}
-              type={type}
-              collection={collection}
-              projection={projection}
-              categorizedBy={categorizedBy}
-              metadata={metadata}
-              onChange={(values) => {
-                this.onChange({
-                  ...values,
-                });
-              }}
-            />
-          );
-        }
-        default: {
-          return null;
-        }
-      }
-    }
-
     render() {
       const {
-        onConfirm, isVisible, onCancel,
+        onConfirm, isVisible, onCancel, collectionsConfig,
       } = this.props;
       const {
-        name, source, showErrors, errors, type,
+        showErrors, errors, type,
       } = this.state;
 
       return (
@@ -112,40 +84,14 @@ export default class AddCustomViewModal extends Component {
             disabled: !type || errors.length > 0,
           }}
         >
-          <FormContainer>
-            <Input
-              placeholder="Name"
-              value={name}
-              onChange={(e) => {
-                this.onChange({ name: e.target.value });
-              }}
-            />
-            <Select
-              placeholder="Select a source"
-              value={source}
-              onChange={(value) => this.onChange({ source: value })}
-            >
-              {SOURCES.map((i) => (
-                <Select.Option value={i} key={i}>
-                  {i}
-                </Select.Option>
-              ))}
-            </Select>
-            {this.renderBySource()}
-            {
-              showErrors ? (
-                <ul>
-                  {errors.map((error) => <li>{error.message}</li>)}
-                </ul>
-              ) : null
-            }
-          </FormContainer>
+          <FormCustomView
+            fields={this.getValuesForCreation()}
+            onChange={this.onChange}
+            showErrors={showErrors}
+            errors={errors}
+            collectionsConfig={collectionsConfig}
+          />
         </Modal>
       );
     }
 }
-
-const FormContainer = styled.div`
-  display: grid;
-  grid-gap: 10px;
-`;
