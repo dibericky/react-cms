@@ -13,6 +13,8 @@ import PanelContent from './PanelContent';
 export default class TableViewContent extends Component {
   static propTypes = {
     data: PropTypes.arrayOf(PropTypes.object),
+    isLoading: PropTypes.bool,
+    primaryKeyName: PropTypes.string,
     config: PropTypes.arrayOf(PropTypes.shape({
       name: PropTypes.string.isRequired,
       type: PropTypes.string.isRequired,
@@ -31,6 +33,8 @@ export default class TableViewContent extends Component {
   static defaultProps = {
     data: [],
     config: [],
+    primaryKeyName: '',
+    isLoading: false,
   };
 
   getColumns() {
@@ -46,14 +50,15 @@ export default class TableViewContent extends Component {
     });
   }
 
-  onValueChange = (id, column, value) => {
-    const { data, onValueChange } = this.props;
-    const row = data.find((item) => item.id === id);
+  onValueChange = (record, column, value) => {
+    const { data, onValueChange, primaryKeyName } = this.props;
+    const primaryKey = record[primaryKeyName];
+    const row = data.find((item) => item[primaryKeyName] === primaryKey);
     if (row) {
       const newValues = {
         [column]: value,
       };
-      onValueChange(id, newValues);
+      onValueChange(primaryKey, newValues);
     }
   }
 
@@ -77,31 +82,33 @@ export default class TableViewContent extends Component {
 
 
   mapTypeToRender(config) {
+    const { primaryKeyName } = this.props;
     if (!config.primaryKey) {
       return (value, record) => (
         <Field
           value={value}
           configColumn={config}
-          onValueChange={(newValue, colName) => this.onValueChange(record.id, colName, newValue)}
+          onValueChange={(newValue, colName) => this.onValueChange(record, colName, newValue)}
         />
       );
     }
     return (value, record) => {
-      const { id } = record;
+      const primaryKey = record[primaryKeyName];
       const text = value || config.default;
-      return <Button type="link" onClick={() => config.action(id)}>{text}</Button>;
+      return <Button type="link" onClick={() => config.action(primaryKey)}>{text}</Button>;
     };
   }
 
   render() {
-    const { data } = this.props;
+    const { data, primaryKeyName, isLoading } = this.props;
     return (
       <PanelContent>
         <div style={{ height: '100%', overflow: 'hidden' }}>
           <Table
+            loading={isLoading}
             dataSource={data}
             columns={this.getColumns()}
-            rowKey={(record) => record.id}
+            rowKey={(record) => record[primaryKeyName]}
           />
         </div>
       </PanelContent>

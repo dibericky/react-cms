@@ -5,7 +5,15 @@ import TableViewContent from './TableViewContent';
 import CustomViewer from '../containers/CustomViewer';
 
 export default function ListContent({
-  name, data, config, editCollectionItemById, isCustom, navigateToItem, category, navigateToCategory,
+  name,
+  data,
+  config,
+  editCollectionItemById,
+  isCustom,
+  navigateToItem,
+  category,
+  navigateToCategory,
+  primaryKeyName,
 }) {
   const [configTable, setConfigTable] = useState(config);
 
@@ -21,7 +29,9 @@ export default function ListContent({
     !isCustom
       ? (
         <TableViewContent
+          isLoading={!primaryKeyName || !data}
           data={data}
+          primaryKeyName={primaryKeyName}
           config={configTable}
           onValueChange={(id, newValue) => editCollectionItemById(name, id, newValue)}
           navigateToItem={navigateToItem}
@@ -46,6 +56,7 @@ ListContent.propTypes = {
   navigateToItem: PropTypes.func.isRequired,
   navigateToCategory: PropTypes.func.isRequired,
   category: PropTypes.string,
+  primaryKeyName: PropTypes.string,
 };
 
 ListContent.defaultProps = {
@@ -54,4 +65,5 @@ ListContent.defaultProps = {
   config: [],
   isCustom: false,
   category: undefined,
+  primaryKeyName: undefined,
 };

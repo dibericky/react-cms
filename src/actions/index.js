@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 
-export const getCollections = (dispatch) => {
+export const getCollections = (dispatch) => (configs) => {
   // eslint-disable-next-line no-undef
   fetch('/collections')
     .then((response) => response.json())
@@ -8,6 +8,7 @@ export const getCollections = (dispatch) => {
       dispatch({
         type: 'GET_COLLECTIONS',
         payload: object,
+        metadata: { configs },
       });
     });
 };

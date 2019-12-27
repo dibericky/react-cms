@@ -26,8 +26,18 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
   const data = get(stateProps.collections, [collectionName, id]);
   const collectionConfig = get(stateProps.configs, collectionName);
 
+  if (!collectionConfig) {
+    return {
+      editCollectionItemById: () => {},
+      data: {},
+      config: [],
+      isLoading: true,
+    };
+  }
+  const primaryKey = collectionConfig.find((col) => col.primaryKey) || collectionConfig[0];
+  const primaryKeyName = primaryKey.name;
   return {
-    editCollectionItemById: (newValues) => editById(collectionName, data.id, newValues),
+    editCollectionItemById: (newValues) => editById(collectionName, data[primaryKeyName], newValues),
     data,
     config: collectionConfig,
   };

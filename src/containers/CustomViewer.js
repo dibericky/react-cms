@@ -6,10 +6,10 @@ import { cloneDeep } from 'lodash';
 import { editCollectionItemById } from '../actions';
 import CustomViewerComponent from '../components/CustomViewer';
 
-function projection(data, columns, metadata = []) {
+function projection(data, columns, metadata = [], primaryKeyName) {
   const clonedData = cloneDeep(data);
   return clonedData.map((item) => ({
-    id: item.id,
+    primaryKey: item[primaryKeyName],
     metadata: metadata.reduce((acc, key) => {
       set(acc, key, get(item, key));
       return acc;
@@ -49,6 +49,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
   const customSelected = custom[name];
   if (!customSelected) {
     return {
+      isLoading: true,
       onItemChange: () => {},
       onCategoryClick: () => {},
     };
@@ -56,6 +57,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
   const collectionSelected = collections[customSelected.collection];
   if (!collectionSelected) {
     return {
+      isLoading: true,
       onItemChange: () => {},
       onCategoryClick: () => {},
     };
@@ -90,14 +92,22 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     }
   }
 
+
+  const primaryKey = collectionConfig.find((col) => col.primaryKey) || collectionConfig[0];
+  const primaryKeyName = get(primaryKey || {}, 'name');
+
   const metadata = customSelected.metadata || [];
   const data = projection(
     collectionFiltered,
     customSelected.projection,
     metadata,
+    primaryKeyName,
   );
 
+
   return {
+    isLoading: !primaryKey,
+    primaryKeyName,
     currentCategory: category,
     config: collectionConfig,
     categories,

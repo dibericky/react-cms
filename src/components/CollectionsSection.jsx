@@ -21,9 +21,14 @@ export default function CollectionsSection({
   const [isModalVisible, setIsModalVisible] = useState(false);
   useEffect(() => {
     getConfigs();
-    getCollections();
     getCustomViews();
   }, [getCollections, getConfigs, getCustomViews]);
+
+  useEffect(() => {
+    if (collectionsConfig && Object.keys(collectionsConfig).length > 0) {
+      getCollections(collectionsConfig);
+    }
+  }, [getCollections, collectionsConfig]);
 
   return (
     <Layout>

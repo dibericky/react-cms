@@ -36,9 +36,13 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
   let data;
   let config;
 
+  let primaryKeyName;
   if (!isCustom) {
-    data = Object.values(get(stateProps.collections, currentContentName, []));
     config = get(stateProps.configs, currentContentName, []);
+    if (config.length > 0) {
+      primaryKeyName = (config.find((column) => column.primaryKey) || config[0]).name;
+      data = Object.values(get(stateProps.collections, currentContentName, []));
+    }
   }
 
   return {
@@ -48,6 +52,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     name: currentContentName,
     data,
     config,
+    primaryKeyName,
     isCustom,
     category: currentCategory,
     navigateToCategory: (category) => historyPush(getNewCategoryUrl(currentPath, params, category)),

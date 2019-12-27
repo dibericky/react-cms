@@ -14,7 +14,7 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch) {
   return {
-    getCollections: () => getCollections(dispatch),
+    getCollections: (configs) => getCollections(dispatch)(configs),
     getConfigs: () => getConfigs(dispatch),
     getCustomViews: () => getCustomViews(dispatch),
     editCollectionItemById: (name, id, newValue) => editCollectionItemById(dispatch)(name, id, newValue),

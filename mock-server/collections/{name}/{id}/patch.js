@@ -6,9 +6,10 @@ module.exports = (req, res) => {
   const dbPath = join(__dirname, '..', '..', '..', '..', 'mock-db', 'db.json');
   fs.readFile(dbPath, (err, data) => {
     const db = JSON.parse(data);
-    const indexItem = db.collections[name].findIndex((item) => item.id === id);
+    const primaryKeyName = db.configs[name].find((col) => col.primaryKey).name;
+    const indexItem = db.collections[name].findIndex((item) => item[primaryKeyName] === id);
     if (indexItem === -1) {
-      return res.status(204);
+      return res.status(204).send();
     }
     const currentValues = db.collections[name][indexItem];
     const newValues = {

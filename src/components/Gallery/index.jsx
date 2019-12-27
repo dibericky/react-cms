@@ -5,10 +5,13 @@ import { Empty as AntdEmpty } from 'antd';
 
 import Modal from './Modal';
 
-export default function Gallery({ items, onDataChange, collectionConfig }) {
+export default function Gallery({
+  items, onDataChange, collectionConfig,
+}) {
   const [previewImage, setPreviewImage] = useState();
   const [previewId, setPreviewId] = useState();
   const [previewMetadata, setPreviewMetadata] = useState();
+
   return (
     <>
       <Container>
@@ -17,15 +20,15 @@ export default function Gallery({ items, onDataChange, collectionConfig }) {
             ? (
               <Image
                 src={item.values.image}
-                key={item.id}
+                key={item.primaryKey}
                 onClick={() => {
                   setPreviewImage(item.values.image);
-                  setPreviewId(item.id);
+                  setPreviewId(item.primaryKey);
                   setPreviewMetadata(item.metadata);
                 }}
               />
             )
-            : <Empty onClick={() => setPreviewId(item.id)} />
+            : <Empty onClick={() => setPreviewId(item.primaryKey)} />
         ))}
       </Container>
       <Modal
@@ -51,7 +54,7 @@ export default function Gallery({ items, onDataChange, collectionConfig }) {
 
 Gallery.propTypes = {
   items: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
+    primaryKey: PropTypes.string.isRequired,
     values: PropTypes.shape({
       image: PropTypes.string.isRequired,
     }).isRequired,

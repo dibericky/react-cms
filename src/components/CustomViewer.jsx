@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Spin } from 'antd';
 
 import CategoryMenu from './CategoryMenu';
 import Gallery from './Gallery/index';
@@ -7,19 +8,29 @@ import PanelContent from './PanelContent';
 
 function getViewerByType(type, data, onItemChange, config) {
   if (type === 'gallery') {
-    return <Gallery items={data} onDataChange={onItemChange} collectionConfig={config} />;
+    return (
+      <Gallery
+        items={data}
+        onDataChange={onItemChange}
+        collectionConfig={config}
+      />
+    );
   }
   return <div>{JSON.stringify(data)}</div>;
 }
 
 export default function CustomViewer({
-  data, type, onItemChange, categories, onCategoryClick, config,
+  data, type, onItemChange, categories, onCategoryClick, config, isLoading,
 }) {
   return (
     <>
       <CategoryMenu categories={categories} onCategoryClick={onCategoryClick} />
       <PanelContent>
-        {getViewerByType(type, data, onItemChange, config)}
+        {
+          !isLoading
+            ? getViewerByType(type, data, onItemChange, config)
+            : <Spin />
+        }
       </PanelContent>
     </>
   );
@@ -27,7 +38,7 @@ export default function CustomViewer({
 
 CustomViewer.propTypes = {
   data: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
+    primaryKey: PropTypes.string.isRequired,
     values: PropTypes.object.isRequired,
     metadata: PropTypes.object.isRequired,
   })),
@@ -38,6 +49,7 @@ CustomViewer.propTypes = {
     PropTypes.number,
   ])),
   onCategoryClick: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool,
   config: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
@@ -46,6 +58,7 @@ CustomViewer.propTypes = {
   })),
 };
 CustomViewer.defaultProps = {
+  isLoading: false,
   data: [],
   type: 'none',
   categories: [],
