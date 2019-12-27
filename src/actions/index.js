@@ -69,3 +69,20 @@ export const createCustomView = (dispatch) => (values, onSuccess) => {
       onSuccess();
     });
 };
+
+export const editCustomView = (dispatch) => (id, values, onSuccess) => {
+  // eslint-disable-next-line no-undef
+  fetch(`/custom-views/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(values),
+  })
+    .then((response) => response.json())
+    .then((object) => {
+      dispatch({
+        type: 'EDIT_CUSTOM_VIEW',
+        payload: object,
+        metadata: { id },
+      });
+      if (onSuccess) onSuccess();
+    });
+};

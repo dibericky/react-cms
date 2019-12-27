@@ -4,15 +4,10 @@
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Input, Select } from 'antd';
-import styled from 'styled-components';
+import { Modal } from 'antd';
 
-import SourceCollectionCreator from './SourceCollectionCreator';
-import validateValues from './validateValuesBySchema';
-import FormCustomView from './FormCustomView';
-
-
-const SOURCES = ['collection'];
+import validateValues from './FormCustomView/validateValuesBySchema';
+import FormCustomView from './FormCustomView/index';
 
 export default class AddCustomViewModal extends Component {
     static propTypes = {

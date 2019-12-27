@@ -11,6 +11,7 @@ function mapStateToProps(state) {
   const fromCustom = Object.keys(views.custom).map((key) => ({
     id: `custom/${key}${views.custom[key].categorizedBy ? '/category/' : ''}`,
     name: views.custom[key].name,
+    editPath: `custom/${key}/settings`,
   }));
   return {
     menuItemsFromCustom: fromCustom,

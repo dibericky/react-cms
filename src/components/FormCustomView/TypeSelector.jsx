@@ -15,13 +15,14 @@ export default class TypeSelector extends Component {
       onChange: PropTypes.func.isRequired,
       type: PropTypes.string,
       collectionConfig: PropTypes.arrayOf(PropTypes.object),
-      projection: PropTypes.arrayOf(PropTypes.string).isRequired,
+      projection: PropTypes.arrayOf(PropTypes.string),
       metadata: PropTypes.arrayOf(PropTypes.string).isRequired,
     }
 
     static defaultProps = {
       type: undefined,
       collectionConfig: [],
+      projection: [],
     }
 
     renderByType() {

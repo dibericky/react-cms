@@ -5,7 +5,7 @@ import { Layout, Breadcrumb } from 'antd';
 
 import Sider from '../containers/Sider';
 import Content from '../containers/Content';
-import AddCustomViewModal from './AddCustomViewModal/index';
+import AddCustomViewModal from './AddCustomViewModal';
 
 export default function CollectionsSection({
   createCustomView,
@@ -29,6 +29,7 @@ export default function CollectionsSection({
     <Layout>
       <Sider
         onItemViewClick={navigateToCollection}
+        onEditViewClick={navigateToCollection}
         onClickAdd={(id) => {
           if (id !== 'custom') {
             return;

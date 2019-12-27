@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 export default function CategorizedSelector({ categorizedBy, collectionConfig, onChange }) {
   const [collectionField, setCollectionField] = useState();
-  const [isCategorized, setIsCategorized] = useState(false);
+  const [isCategorized, setIsCategorized] = useState(!!categorizedBy);
   const [enumColumns, setEnumColumns] = useState([]);
   const [categories, setCategories] = useState([]);
   useEffect(() => {

@@ -1,9 +1,10 @@
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/forbid-prop-types */
 /* eslint-disable react/static-property-placement */
 import React, { Component } from 'react';
 import { Select } from 'antd';
 import PropTypes from 'prop-types';
-
+import { equals } from 'ramda';
 
 export default class GalleryCreator extends Component {
     static propTypes = {
@@ -18,6 +19,25 @@ export default class GalleryCreator extends Component {
       imageColumn: undefined,
     }
 
+    componentDidUpdate(prevProps) {
+      const { onChange } = this.props;
+      const prevCollectionConfigsName = prevProps.collectionConfig.map((column) => column.name);
+      const currentCollectionConfigsName = this.props.collectionConfig.map((column) => column.name);
+
+      if (
+        equals(this.props.metadata, prevProps.metadata)
+          && !equals(prevCollectionConfigsName, currentCollectionConfigsName)
+      ) {
+        // check if new collectionConfig changes the available columns for metadata
+        const currentMetadata = this.props.metadata
+          .filter((m) => currentCollectionConfigsName.includes(m));
+
+        if (this.props.metadata.length !== currentMetadata.length) {
+          onChange({ metadata: currentMetadata });
+        }
+      }
+    }
+
     getImageColumns() {
       const { collectionConfig } = this.props;
       return collectionConfig
@@ -28,6 +48,8 @@ export default class GalleryCreator extends Component {
       const {
         onChange, imageColumn, metadata, collectionConfig,
       } = this.props;
+      const collectionConfigsName = collectionConfig.map((column) => column.name);
+
       return (
         <>
           <Select
@@ -47,9 +69,9 @@ export default class GalleryCreator extends Component {
             value={metadata}
             onChange={(columns) => onChange({ metadata: columns })}
           >
-            {collectionConfig.map((column) => (
-              <Select.Option value={column.name} key={column.name}>
-                {column.name}
+            {collectionConfigsName.map((column) => (
+              <Select.Option value={column} key={column}>
+                {column}
               </Select.Option>
             ))}
           </Select>

@@ -7,8 +7,20 @@ import styled from 'styled-components';
 
 const { SubMenu } = Menu;
 
+function ClickableMenuIcon({ onClick, icon }) {
+  return (
+    <Icon
+      onClick={(e) => {
+        e.stopPropagation();
+        onClick();
+      }}
+      type={icon}
+    />
+  );
+}
+
 function Sider({
-  menuItems, onItemViewClick, onClickAdd, defaultOpenKeys,
+  menuItems, onItemViewClick, onClickAdd, defaultOpenKeys, onEditViewClick,
 }) {
   return (
     <Layout.Sider
@@ -37,26 +49,38 @@ function Sider({
                     <span>
                       <AntdIcon type="user" />
                       {menuItem.name}
-                      {
+                      <div style={{ display: 'inline-block', float: 'right' }}>
+                        {
                         menuItem.addButton
                           ? (
-                            <div style={{ display: 'inline-block', float: 'right' }}>
-                              <Icon
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  onClickAdd(menuItem.id);
-                                }}
-                                type="plus-circle"
-                              />
-                            </div>
+                            <ClickableMenuIcon
+                              onClick={() => onClickAdd(menuItem.id)}
+                              icon="plus-circle"
+                            />
                           ) : null
                       }
+                      </div>
                     </span>
             )}
                 >
                   {
             menuItem.children.map((child) => (
-              <Menu.Item key={child.id}>{child.name}</Menu.Item>
+              <Menu.Item
+                key={child.id}
+              >
+                {child.name}
+                <div style={{ display: 'inline-block', float: 'right' }}>
+                  {
+                        child.editPath
+                          ? (
+                            <ClickableMenuIcon
+                              onClick={() => onEditViewClick(child.editPath)}
+                              icon="edit"
+                            />
+                          ) : null
+                      }
+                </div>
+              </Menu.Item>
             ))
           }
                 </SubMenu>
@@ -94,6 +118,7 @@ Sider.propTypes = {
   ),
   defaultOpenKeys: PropTypes.arrayOf(PropTypes.string),
   onItemViewClick: PropTypes.func.isRequired,
+  onEditViewClick: PropTypes.func.isRequired,
   onClickAdd: PropTypes.func.isRequired,
 };
 
