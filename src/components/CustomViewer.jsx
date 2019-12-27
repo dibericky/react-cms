@@ -1,6 +1,7 @@
+/* eslint-disable no-nested-ternary */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Spin } from 'antd';
+import { Spin, Empty } from 'antd';
 
 import CategoryMenu from './CategoryMenu';
 import Gallery from './Gallery/index';
@@ -27,9 +28,12 @@ export default function CustomViewer({
       <CategoryMenu categories={categories} onCategoryClick={onCategoryClick} />
       <PanelContent>
         {
-          !isLoading
-            ? getViewerByType(type, data, onItemChange, config)
-            : <Spin />
+          isLoading
+            ? <Spin />
+            : data.length === 0
+              ? <Empty />
+              : getViewerByType(type, data, onItemChange, config)
+
         }
       </PanelContent>
     </>
