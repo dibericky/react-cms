@@ -33,6 +33,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     fullPath: ownProps.location.pathname,
     basePath: ownProps.match.url,
     navigateToCollection: (collectionName) => historyPush(join(collectionsUrl, collectionName)),
+    navigateTo: historyPush,
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(CollectionsSectionComponent);

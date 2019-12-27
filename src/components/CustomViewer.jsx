@@ -21,11 +21,15 @@ function getViewerByType(type, data, onItemChange, config) {
 }
 
 export default function CustomViewer({
-  data, type, onItemChange, categories, onCategoryClick, config, isLoading,
+  data, type, onItemChange, categories, onCategoryClick, config, isLoading, category,
 }) {
   return (
     <>
-      <CategoryMenu categories={categories} onCategoryClick={onCategoryClick} />
+      <CategoryMenu
+        categories={categories}
+        onCategoryClick={onCategoryClick}
+        category={category}
+      />
       <PanelContent>
         {
           isLoading
@@ -41,6 +45,7 @@ export default function CustomViewer({
 }
 
 CustomViewer.propTypes = {
+  category: PropTypes.string,
   data: PropTypes.arrayOf(PropTypes.shape({
     primaryKey: PropTypes.string.isRequired,
     values: PropTypes.object.isRequired,
@@ -62,6 +67,7 @@ CustomViewer.propTypes = {
   })),
 };
 CustomViewer.defaultProps = {
+  category: undefined,
   isLoading: false,
   data: [],
   type: 'none',

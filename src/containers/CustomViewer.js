@@ -110,6 +110,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     primaryKeyName,
     currentCategory: category,
     config: collectionConfig,
+    category,
     categories,
     data,
     type: customSelected.type,

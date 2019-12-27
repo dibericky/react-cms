@@ -4,12 +4,13 @@ import PropTypes from 'prop-types';
 
 const ALL_KEY = '__all';
 
-export default function CategoryMenu({ categories, onCategoryClick }) {
+export default function CategoryMenu({ categories, onCategoryClick, category }) {
   if (categories.length === 0) {
     return null;
   }
   return (
     <Menu
+      selectedKeys={[category || ALL_KEY]}
       mode="horizontal"
       style={{ marginBottom: 10 }}
       onClick={({ key }) => onCategoryClick(key !== ALL_KEY ? key : undefined)}
@@ -26,6 +27,7 @@ export default function CategoryMenu({ categories, onCategoryClick }) {
   );
 }
 CategoryMenu.propTypes = {
+  category: PropTypes.string,
   categories: PropTypes.arrayOf(PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
@@ -33,5 +35,6 @@ CategoryMenu.propTypes = {
   onCategoryClick: PropTypes.func.isRequired,
 };
 CategoryMenu.defaultProps = {
+  category: undefined,
   categories: [],
 };

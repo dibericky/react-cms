@@ -1,8 +1,9 @@
 /* eslint-disable react/forbid-prop-types */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Layout, Breadcrumb } from 'antd';
+import { Layout } from 'antd';
 
+import Breadcrumb from './Breadcrumb';
 import Sider from '../containers/Sider';
 import Content from '../containers/Content';
 import AddCustomViewModal from './AddCustomViewModal';
@@ -17,6 +18,7 @@ export default function CollectionsSection({
   getConfigs,
   editCollectionItemById,
   collectionsConfig,
+  navigateTo,
 }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   useEffect(() => {
@@ -29,6 +31,7 @@ export default function CollectionsSection({
       getCollections(collectionsConfig);
     }
   }, [getCollections, collectionsConfig]);
+
 
   return (
     <Layout>
@@ -43,13 +46,12 @@ export default function CollectionsSection({
         }}
       />
       <Layout style={{ padding: '0 24px 24px' }}>
-        <Breadcrumb style={{ margin: '16px 0' }}>
-          {
-            fullPath.split('/').map((part) => (
-              <Breadcrumb.Item key={part}>{part}</Breadcrumb.Item>
-            ))
-          }
-        </Breadcrumb>
+        <Breadcrumb
+          fullPath={fullPath}
+          onItemClick={navigateTo}
+          style={{ margin: '16px 0' }}
+        />
+
         <Content
           basePath={basePath}
           editCollectionItemById={editCollectionItemById}
@@ -79,5 +81,6 @@ CollectionsSection.propTypes = {
   fullPath: PropTypes.string.isRequired,
   basePath: PropTypes.string.isRequired,
   navigateToCollection: PropTypes.func.isRequired,
+  navigateTo: PropTypes.func.isRequired,
   collectionsConfig: PropTypes.object.isRequired,
 };

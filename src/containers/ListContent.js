@@ -22,7 +22,12 @@ function mapDispatchToProps(dispatch) {
   };
 }
 function getNewCategoryUrl(path, params, newCategory) {
-  return generatePath(path, {
+  const pathArray = path.split('/');
+  if (!pathArray.find((item) => item === 'category')) {
+    pathArray.push('category');
+    pathArray.push(':category');
+  }
+  return generatePath(pathArray.join('/'), {
     ...params,
     category: newCategory,
   });
