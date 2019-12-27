@@ -8,7 +8,6 @@ import { Button } from 'antd';
 
 import Field from './Field';
 import Table from './Table';
-import PanelContent from './PanelContent';
 
 export default class TableViewContent extends Component {
   static propTypes = {
@@ -102,16 +101,12 @@ export default class TableViewContent extends Component {
   render() {
     const { data, primaryKeyName, isLoading } = this.props;
     return (
-      <PanelContent>
-        <div style={{ height: '100%', overflow: 'hidden' }}>
-          <Table
-            loading={isLoading}
-            dataSource={data}
-            columns={this.getColumns()}
-            rowKey={(record) => record[primaryKeyName]}
-          />
-        </div>
-      </PanelContent>
+      <Table
+        loading={isLoading}
+        dataSource={data}
+        columns={this.getColumns()}
+        rowKey={(record) => record[primaryKeyName]}
+      />
     );
   }
 }

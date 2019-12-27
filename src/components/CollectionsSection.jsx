@@ -50,7 +50,10 @@ export default function CollectionsSection({
             ))
           }
         </Breadcrumb>
-        <Content basePath={basePath} editCollectionItemById={editCollectionItemById} />
+        <Content
+          basePath={basePath}
+          editCollectionItemById={editCollectionItemById}
+        />
       </Layout>
       <AddCustomViewModal
         isVisible={isModalVisible}

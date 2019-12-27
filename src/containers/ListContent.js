@@ -4,7 +4,7 @@ import get from 'lodash.get';
 import { join } from 'path';
 import { generatePath } from 'react-router';
 
-import { editCollectionItemById } from '../actions';
+import { editCollectionItemById, createCollectionItem, getCollections } from '../actions';
 import ListContent from '../components/ListContent';
 
 function mapStateToProps(state) {
@@ -17,6 +17,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     editCollectionItemById: (name, id, newValue) => editCollectionItemById(dispatch)(name, id, newValue),
+    createCollectionItem: createCollectionItem(dispatch),
+    getCollections: getCollections(dispatch),
   };
 }
 function getNewCategoryUrl(path, params, newCategory) {
@@ -48,6 +50,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
   return {
     ...dispatchProps,
     ...ownProps,
+    getCollections: () => dispatchProps.getCollections(stateProps.configs),
     navigateToItem: (id) => historyPush(join(ownProps.match.url, id)),
     name: currentContentName,
     data,
@@ -55,6 +58,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     primaryKeyName,
     isCustom,
     category: currentCategory,
+    createCollectionItem: (values, onSuccess) => dispatchProps.createCollectionItem(currentContentName, values, onSuccess),
     navigateToCategory: (category) => historyPush(getNewCategoryUrl(currentPath, params, category)),
   };
 }

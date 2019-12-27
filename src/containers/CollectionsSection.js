@@ -3,7 +3,9 @@ import { connect } from 'react-redux';
 import { join } from 'path';
 
 import {
-  getCollections, getConfigs, editCollectionItemById, getCustomViews, createCustomView,
+  getCollections, editCollectionItemById,
+  getConfigs,
+  getCustomViews, createCustomView,
 } from '../actions';
 import CollectionsSectionComponent from '../components/CollectionsSection';
 

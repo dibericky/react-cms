@@ -67,6 +67,7 @@ export default class AddCustomViewModal extends Component {
 
       return (
         <Modal
+          title="Create new Custom View"
           visible={isVisible}
           onCancel={onCancel}
           onOk={() => {

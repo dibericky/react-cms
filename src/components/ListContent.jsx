@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import TableViewContent from './TableViewContent';
+import DefaultCollectionItemsView from './DefaultCollectionItemsView';
 import CustomViewer from '../containers/CustomViewer';
 
 export default function ListContent({
@@ -9,6 +9,8 @@ export default function ListContent({
   data,
   config,
   editCollectionItemById,
+  createCollectionItem,
+  getCollections,
   isCustom,
   navigateToItem,
   category,
@@ -28,13 +30,16 @@ export default function ListContent({
   return (
     !isCustom
       ? (
-        <TableViewContent
+        <DefaultCollectionItemsView
+          createCollectionItem={(values, onSuccess) => createCollectionItem(values, () => {
+            getCollections();
+            onSuccess();
+          })}
           isLoading={!primaryKeyName || !data}
           data={data}
           primaryKeyName={primaryKeyName}
           config={configTable}
           onValueChange={(id, newValue) => editCollectionItemById(name, id, newValue)}
-          navigateToItem={navigateToItem}
         />
       )
       : (
@@ -54,9 +59,11 @@ ListContent.propTypes = {
   editCollectionItemById: PropTypes.func.isRequired,
   isCustom: PropTypes.bool,
   navigateToItem: PropTypes.func.isRequired,
+  getCollections: PropTypes.func.isRequired,
   navigateToCategory: PropTypes.func.isRequired,
   category: PropTypes.string,
   primaryKeyName: PropTypes.string,
+  createCollectionItem: PropTypes.func.isRequired,
 };
 
 ListContent.defaultProps = {

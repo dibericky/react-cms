@@ -44,6 +44,25 @@ export const editCollectionItemById = (dispatch) => (collectionName, id, values)
     });
 };
 
+export const createCollectionItem = (dispatch) => (collectionName, values, onSuccess) => {
+  // eslint-disable-next-line no-undef
+  fetch(`/collections/${collectionName}/`, {
+    method: 'POST',
+    body: JSON.stringify(values),
+  })
+    .then((response) => response.json())
+    .then((object) => {
+      dispatch({
+        type: 'CREATE_COLLECTION_ITEM',
+        payload: object,
+        metadata: {
+          collectionName,
+        },
+      });
+      onSuccess();
+    });
+};
+
 export const getCustomViews = (dispatch) => {
   // eslint-disable-next-line no-undef
   fetch('/custom-views')
