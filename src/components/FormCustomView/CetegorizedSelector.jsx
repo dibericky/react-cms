@@ -9,6 +9,7 @@ export default function CategorizedSelector({ categorizedBy, collectionConfig, o
   const [enumColumns, setEnumColumns] = useState([]);
   const [categories, setCategories] = useState([]);
   useEffect(() => {
+    console.log('BEFORE ', collectionField, 'SET ', categorizedBy);
     setCollectionField(categorizedBy);
     const columnSelected = collectionConfig.find((col) => col.name === categorizedBy);
     setCategories(columnSelected ? get(columnSelected, 'enum', []) : []);
@@ -18,6 +19,14 @@ export default function CategorizedSelector({ categorizedBy, collectionConfig, o
     const withEnums = collectionConfig.filter((config) => config.type === 'enum');
     setEnumColumns(withEnums);
   }, [collectionConfig]);
+
+  useEffect(() => {
+    const enumColumnsName = enumColumns.map((m) => m.name);
+
+    if (collectionField && !enumColumnsName.includes(collectionField)) {
+      onChange(undefined);
+    }
+  }, [enumColumns, collectionField, onChange]);
 
   if (enumColumns.length === 0) {
     return null;
