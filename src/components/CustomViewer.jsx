@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Spin, Empty } from 'antd';
 
@@ -21,8 +21,14 @@ function getViewerByType(type, data, onItemChange, config) {
 }
 
 export default function CustomViewer({
-  data, type, onItemChange, categories, onCategoryClick, config, isLoading, category,
+  data, type, onItemChange, categories, onCategoryClick,
+  config, isLoading, category, getCollectionRequired,
 }) {
+  useEffect(() => {
+    if (data === null) {
+      getCollectionRequired();
+    }
+  }, [data]);
   return (
     <>
       <CategoryMenu
@@ -46,6 +52,7 @@ export default function CustomViewer({
 
 CustomViewer.propTypes = {
   category: PropTypes.string,
+  getCollectionRequired: PropTypes.func,
   data: PropTypes.arrayOf(PropTypes.shape({
     primaryKey: PropTypes.string.isRequired,
     values: PropTypes.object.isRequired,
@@ -67,6 +74,7 @@ CustomViewer.propTypes = {
   })),
 };
 CustomViewer.defaultProps = {
+  getCollectionRequired: () => {},
   category: undefined,
   isLoading: false,
   data: [],

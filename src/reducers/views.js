@@ -8,7 +8,7 @@ export default function (state = initialState, { type, payload }) {
     case 'GET_COLLECTIONS': {
       return {
         ...state,
-        default: Object.keys(payload),
+        default: payload,
       };
     }
     case 'GET_CUSTOM_VIEWS': {

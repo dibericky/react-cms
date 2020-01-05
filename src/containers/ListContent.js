@@ -4,7 +4,9 @@ import get from 'lodash.get';
 import { join } from 'path';
 import { generatePath } from 'react-router';
 
-import { editCollectionItemById, createCollectionItem, getCollections } from '../actions';
+import {
+  editCollectionItemById, createCollectionItem, getCollections, getCollectionByName,
+} from '../actions';
 import ListContent from '../components/ListContent';
 
 function mapStateToProps(state) {
@@ -19,6 +21,7 @@ function mapDispatchToProps(dispatch) {
     editCollectionItemById: (name, id, newValue) => editCollectionItemById(dispatch)(name, id, newValue),
     createCollectionItem: createCollectionItem(dispatch),
     getCollections: getCollections(dispatch),
+    getCollectionByName: getCollectionByName(dispatch),
   };
 }
 function getNewCategoryUrl(path, params, newCategory) {
@@ -40,7 +43,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
   const currentPath = ownProps.match.path;
 
   const isCustom = params.type === 'custom';
-  let data;
+  let data = null;
   let config;
 
   let primaryKeyName;
@@ -48,7 +51,10 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     config = get(stateProps.configs, currentContentName, []);
     if (config.length > 0) {
       primaryKeyName = (config.find((column) => column.primaryKey) || config[0]).name;
-      data = Object.values(get(stateProps.collections, currentContentName, []));
+      const collection = get(stateProps.collections, currentContentName);
+      if (collection !== null) {
+        data = Object.values(collection || []);
+      }
     }
   }
 
@@ -56,6 +62,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...dispatchProps,
     ...ownProps,
     getCollections: () => dispatchProps.getCollections(stateProps.configs),
+    getCurrentCollection: () => dispatchProps.getCollectionByName(stateProps.configs, currentContentName),
     navigateToItem: (id) => historyPush(join(ownProps.match.url, id)),
     name: currentContentName,
     data,

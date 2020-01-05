@@ -16,18 +16,24 @@ function getMapPrimaryKeyCollection(configs) {
 export default function (state = initialState, { type, payload, metadata }) {
   switch (type) {
     case 'GET_COLLECTIONS': {
-      const { configs } = metadata;
+      return payload.reduce((acc, collectionName) => ({
+        ...acc,
+        [collectionName]: state[collectionName] || null,
+      }), {});
+    }
+    case 'GET_COLLECTION_BY_NAME': {
+      const { configs, collectionName } = metadata;
       const primaryKeyCollectionNameMap = getMapPrimaryKeyCollection(configs);
-      return Object.keys(payload).reduce((acc1, collectionName) => ({
-        ...acc1,
-        [collectionName]: payload[collectionName].reduce((acc2, item) => {
+      return {
+        ...state,
+        [collectionName]: payload.reduce((acc, item) => {
           const primaryKeyColumn = primaryKeyCollectionNameMap[collectionName];
           return {
-            ...acc2,
+            ...acc,
             [item[primaryKeyColumn]]: item,
           };
         }, {}),
-      }), {});
+      };
     }
     case 'EDIT_COLLECTION_ITEM': {
       const { id, collectionName } = metadata;

@@ -13,6 +13,19 @@ export const getCollections = (dispatch) => (configs) => {
     });
 };
 
+export const getCollectionByName = (dispatch) => (configs, collectionName) => {
+  // eslint-disable-next-line no-undef
+  fetch(`/collections/${collectionName}`)
+    .then((response) => response.json())
+    .then((object) => {
+      dispatch({
+        type: 'GET_COLLECTION_BY_NAME',
+        payload: object,
+        metadata: { configs, collectionName },
+      });
+    });
+};
+
 export const getConfigs = (dispatch) => {
   // eslint-disable-next-line no-undef
   fetch('/configs')

@@ -3,7 +3,7 @@ import get from 'lodash.get';
 import set from 'lodash.set';
 import { cloneDeep } from 'lodash';
 
-import { editCollectionItemById } from '../actions';
+import { editCollectionItemById, getCollectionByName } from '../actions';
 import CustomViewerComponent from '../components/CustomViewer';
 
 function projection(data, columns, metadata = [], primaryKeyName) {
@@ -40,11 +40,12 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     onItemChange: editCollectionItemById(dispatch),
+    getCollectionRequired: getCollectionByName(dispatch),
   };
 }
 function mergeProps(stateProps, dispatchProps, ownProps) {
   const { name, category, onCategoryClick } = ownProps;
-  const { onItemChange } = dispatchProps;
+  const { onItemChange, getCollectionRequired } = dispatchProps;
   const { custom, collections, configs } = stateProps;
   const customSelected = custom[name];
   if (!customSelected) {
@@ -57,6 +58,8 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
   const collectionSelected = collections[customSelected.collection];
   if (!collectionSelected) {
     return {
+      getCollectionRequired: () => getCollectionRequired(configs, customSelected.collection),
+      data: null,
       isLoading: true,
       onItemChange: () => {},
       onCategoryClick: () => {},
@@ -114,6 +117,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     categories,
     data,
     type: customSelected.type,
+    getCollectionRequired: () => getCollectionRequired(configs, customSelected.collection),
     onItemChange: (id, values) => onItemChange(customSelected.collection, id, values),
     onCategoryClick: (categoryClicked) => onCategoryClick(categoryClicked),
   };

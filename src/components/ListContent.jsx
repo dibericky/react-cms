@@ -9,8 +9,8 @@ export default function ListContent({
   data,
   config,
   editCollectionItemById,
+  getCurrentCollection,
   createCollectionItem,
-  getCollections,
   isCustom,
   navigateToItem,
   category,
@@ -27,16 +27,22 @@ export default function ListContent({
     setConfigTable(configColumns);
   }, [config, navigateToItem]);
 
+  useEffect(() => {
+    if (Object.keys(config).length > 0 && data === null && name) {
+      getCurrentCollection();
+    }
+  }, [data, config]);
+
   return (
     !isCustom
       ? (
         <DefaultCollectionItemsView
           createCollectionItem={(values, onSuccess) => createCollectionItem(values, () => {
-            getCollections();
+            getCurrentCollection();
             onSuccess();
           })}
           isLoading={!primaryKeyName || !data}
-          data={data}
+          data={data || []}
           primaryKeyName={primaryKeyName}
           config={configTable}
           onValueChange={(id, newValue) => editCollectionItemById(name, id, newValue)}
@@ -57,9 +63,9 @@ ListContent.propTypes = {
     type: PropTypes.string.isRequired,
   })),
   editCollectionItemById: PropTypes.func.isRequired,
+  getCurrentCollection: PropTypes.func.isRequired,
   isCustom: PropTypes.bool,
   navigateToItem: PropTypes.func.isRequired,
-  getCollections: PropTypes.func.isRequired,
   navigateToCategory: PropTypes.func.isRequired,
   category: PropTypes.string,
   primaryKeyName: PropTypes.string,

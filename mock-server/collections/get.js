@@ -8,11 +8,7 @@ module.exports = (req, res) => {
     if (err) throw err;
     const toOmit = ['configs.json', 'custom-views.json'];
     const collectionsFilesName = files.filter((name) => !toOmit.includes(name));
-    const collections = {};
-    for (const fileName of collectionsFilesName) {
-      const collection = fs.readFileSync(join(DB_PATH, fileName));
-      collections[fileName.replace('.json', '')] = JSON.parse(collection);
-    }
-    res.send(collections);
+
+    res.send(collectionsFilesName.map((file) => file.replace('.json', '')));
   });
 };
