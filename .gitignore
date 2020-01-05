@@ -22,4 +22,5 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-/mock-db/db.json
+/mock-db/databases/*
+/mock-db/initial/ignore-me.json
